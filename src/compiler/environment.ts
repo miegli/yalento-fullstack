@@ -131,7 +131,7 @@ export class Environment {
     const childProcess = require('child_process');
     childProcess.execSync('${this.config.__codeGenCommandApi}', {stdio : 'pipe'});
     childProcess.execSync('${this.config.__codeGenCommandJest}', {stdio : 'pipe'});
-    childProcess.execSync('\`npm bin\`/ts-interface-builder ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
+    childProcess.execSync('node ${this.getProjectRoot('node_modules', 'ts-interface-builder', 'bin', 'ts-interface-builder')} ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
     let stdout;
     let data;
     `;
