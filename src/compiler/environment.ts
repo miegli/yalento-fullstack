@@ -79,7 +79,7 @@ export class Environment {
       }
       this.config.__swaggerPathGenerated = this.getProjectRoot('node_modules', 'yalento-fullstack', 'lib', 'bin', 'swagger.json');
       childProcess.execSync(
-        `./node_modules/@apidevtools/swagger-cli/bin/swagger-cli.js bundle ${this.config.__swaggerPath} -o ${this.config.__swaggerPathGenerated}`
+        `${this.getProjectRoot('node_modules', '@apidevtools', 'swagger-cli', 'bin', 'swagger-cli.js')} bundle ${this.config.__swaggerPath} -o ${this.config.__swaggerPathGenerated}`
       );
 
       const swagger = require(this.config.__swaggerPathGenerated);
