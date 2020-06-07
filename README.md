@@ -16,9 +16,14 @@
 
 `firebase init `
 
-#### 4. Add yalento-ng-firebase-swagger package
+#### 4. Add yalento packages
 `npm add yalento-fullstack yalento`
 
 #### 5. Complete installation
 
 `npm install`
+
+#### 6. Ready to develop
+
+- `npm run yalento`
+- `npm run swagger:edit`

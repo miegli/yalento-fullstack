@@ -171,6 +171,9 @@ export class Environment {
       });
       source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}models${path.sep}index.ts\`, \`${indexData}\`);`;
 
+      source += `childProcess.execSync(
+        "${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__jsonSchemaPath}models${path.sep}index.ts"
+      );`;
 
       const validatorCode = `import * as schema from './models';
 import * as Ajv from 'ajv';
@@ -208,10 +211,18 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
     export * from '.${path.sep}api/api';`;
 
-    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.d.ts\`, \`${indexApiCode}\`);`;
-
-
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);`;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
+
+
+    childProcess.execSync(
+      `${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__generatedCodePath}${path.sep}index.ts`
+    );
+
+
+    childProcess.execSync(
+      `${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__jsonSchemaPath}index.ts`
+    );
 
 
   }
