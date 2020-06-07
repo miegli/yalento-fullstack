@@ -13,7 +13,7 @@
     "prepublishOnly": "npm run lint",
     "preversion": "npm run lint",
     "test": "npm run build && nyc --reporter=lcov --reporter=text-summary node_modules/.bin/mocha --opts ./mocha.opts src",
-    "version": "npm run format && git add -A src"
+    "version": "git add -A src"
   },
   "devDependencies": {
     "@types/node": "^14.0.10",
