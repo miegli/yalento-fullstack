@@ -148,7 +148,7 @@ export class Environment {
     Object.keys(swagger.definitions).forEach((model) => {
       source += `
       stdout = childProcess.execSync(
-        '\`npm bin\`/typescript-json-schema --required ${outDirApi}${path.sep}api.ts ${model}'
+        '${this.getProjectRoot('node_modules', 'typescript-json-schema', 'bin', 'typescript-json-schema')} --required ${outDirApi}${path.sep}api.ts ${model}'
       );
       data = 'export const ${model.trim()} = ' + stdout.toString() + ';';
       fs.writeFileSync(
