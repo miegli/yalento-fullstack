@@ -1,5 +1,5 @@
-import {CommandInterface} from "./command-interface";
-import {Config} from "../environment";
+import {CommandInterface} from './command-interface';
+import {Config} from '../environment';
 
 const {fork} = require('child_process');
 
@@ -30,9 +30,8 @@ export class Compile implements CommandInterface {
       this.forks.push(forked);
       forked.on('close', () => {
         resolve();
-      })
-    })
-
+      });
+    });
   }
 
 }
