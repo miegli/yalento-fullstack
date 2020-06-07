@@ -208,7 +208,7 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
     export * from '.${path.sep}api/api';`;
 
-    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);`;
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.d.ts\`, \`${indexApiCode}\`);`;
 
 
     fs.writeFileSync(this.config.__codeGenForkPath, source);
@@ -225,6 +225,8 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
   private updateAngularPackageJson() {
     const packageJson = require(this.config.__angularPackageJsonPath);
     packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
+    packageJson.scripts['yalento'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile --watch';
+
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }
 

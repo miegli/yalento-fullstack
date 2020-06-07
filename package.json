@@ -44,8 +44,5 @@
   },
   "files": [
     "lib/**/*"
-  ],
-  "bin": {
-    "yalento": "lib/compiler/yalento-fullstack.js"
-  }
+  ]
 }
