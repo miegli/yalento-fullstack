@@ -12,7 +12,7 @@
     "preversion": "npm run lint",
     "test": "npm run build && nyc --reporter=lcov --reporter=text-summary node_modules/.bin/mocha --opts ./mocha.opts src",
     "version": "git add -A src",
-    "postinstall": "lib/compiler/yalento-fullstack.js compile"
+    "postinstall": "node ./lib/compiler/yalento-fullstack.js compile"
   },
   "devDependencies": {
     "swagger": "^0.7.5",
