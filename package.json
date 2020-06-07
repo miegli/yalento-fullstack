@@ -39,7 +39,6 @@
     "commander": "^5.1.0",
     "ora": "^4.0.4",
     "rxjs": "^6.5.5",
-    "swagger": "^0.7.5",
     "swagger-editor": "^3.10.0",
     "swagger-ui-dist": "^3.25.5",
     "ts-interface-builder": "^0.2.2"
