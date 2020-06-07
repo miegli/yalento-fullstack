@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "swagger:edit": "swagger_swagger_fileName=../../swagger.yaml node ./node_modules/swagger/bin/swagger-project edit",
-    "build": "cp -rv src/templates/. lib/templates && tsc",
+    "build": "tsc && cp -rv src/templates/. lib/templates",
     "lint": "tslint -p tsconfig.json",
     "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run lint",
