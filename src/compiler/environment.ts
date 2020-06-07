@@ -227,7 +227,6 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.d.ts\`, \`${indexApiCode}\`);`;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
 
-    fs.unlinkSync(`${this.config.__generatedCodePath}${path.sep}index.d.ts`);
 
   }
 
