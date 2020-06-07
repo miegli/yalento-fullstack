@@ -41,7 +41,12 @@
     "rxjs": "^6.5.5",
     "swagger-editor": "^3.10.0",
     "swagger-ui-dist": "^3.25.5",
-    "ts-interface-builder": "^0.2.2"
+    "ts-interface-builder": "^0.2.2",
+    "qs": "^6.9.4",
+    "superagent": "^5.2.2",
+    "lodash": "^4.17.15",
+    "string": "^3.3.3",
+    "growl": "^1.10.5"
   },
   "files": [
     "lib/**/*"
