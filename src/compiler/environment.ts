@@ -224,6 +224,10 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
       `${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__jsonSchemaPath}index.ts`
     );
 
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.d.ts\`, \`${indexApiCode}\`);`;
+    fs.writeFileSync(this.config.__codeGenForkPath, source);
+
+    fs.unlinkSync(`${this.config.__generatedCodePath}${path.sep}index.d.ts`);
 
   }
 
