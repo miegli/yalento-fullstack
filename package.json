@@ -6,16 +6,15 @@
   "scripts": {
     "swagger:edit": "swagger_swagger_fileName=../../swagger.yaml node ./node_modules/swagger/bin/swagger-project edit",
     "build": "cp -rv src/templates/. lib/templates && tsc",
-    "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "postversion": "git push && git push --tags",
-    "prepare": "npm run build",
     "prepublishOnly": "npm run lint",
     "preversion": "npm run lint",
     "test": "npm run build && nyc --reporter=lcov --reporter=text-summary node_modules/.bin/mocha --opts ./mocha.opts src",
     "version": "git add -A src"
   },
   "devDependencies": {
+    "swagger": "^0.7.5",
     "@types/node": "^14.0.10",
     "fs-extra": "^9.0.1",
     "prettier": "^2.0.5",
@@ -45,5 +44,8 @@
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "bin": {
+    "yalento": "lib/compiler/yalento-fullstack.js"
+  }
 }
