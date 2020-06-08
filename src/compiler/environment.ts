@@ -213,21 +213,28 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     return false;
   }
 
-  return ajv.errors;
+  if (ajv.errors) {
+    return ajv.errors as any;
+  }
+
+  return true;
 
 }
 `;
 
-      source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}index.ts\`, \`${validatorCode}\`);`;
+      source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}index.ts\`, \`${validatorCode}\`);
+      `;
 
     }
 
     const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
     export * from '.${path.sep}api/api';`;
 
-    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);`;
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);
+    `;
 
-    source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});`;
+    source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});
+    `;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
 
 
