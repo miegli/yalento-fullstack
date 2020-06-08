@@ -51,8 +51,8 @@ program
           if (forked) {
             forked.kill('SIGHUP');
           }
-          if (!isRunning) {
-            setTimeout(() => {
+          setTimeout(() => {
+            if (!isRunning) {
               forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
               isRunning = true;
               forked.on('close', () => {
@@ -60,8 +60,8 @@ program
                 console.clear();
                 console.log(chalk.yellow('Idle'));
               });
-            }, 500);
-          }
+            }
+          }, 500);
         });
       }
     }
