@@ -44,17 +44,15 @@ program
         fs.watchFile(file, (curr, prev) => {
           console.clear();
           console.log(chalk.yellow(path.basename(file + ' changed, re-compiling..')));
-          setTimeout(() => {
             compiler.stop();
             if (forked) {
               forked.kill('SIGHUP');
             }
-            forked = fork('./lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
+            forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
             forked.on('close', () => {
               console.clear();
               console.log(chalk.yellow('Idle'));
             });
-          }, 1000);
         });
       }
     }
