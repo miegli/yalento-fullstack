@@ -24,6 +24,7 @@ export interface Config {
     region?: string,
     ssl?: boolean
   };
+  __tscCommand: string;
   __functionsTsConfigPath: string;
   __angularTsConfigPath: string;
   __angularDistPath: string;
@@ -46,6 +47,8 @@ export class Environment {
   private config: Config = {} as Config;
   private readonly SWAGGER_CODEGEN_SOURCEURL = 'https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.14/swagger-codegen-cli-2.4.14.jar';
   private readonly SWAGGER_CODEGEN_VERSION = '2.4.14';
+  private tempPathName = 'generated';
+  private nodeModulesPathName = 'node_modules2';
 
   constructor() {
 
@@ -77,9 +80,9 @@ export class Environment {
       if (fs.existsSync(this.config.__swaggerPathGenerated)) {
         fs.unlinkSync(this.config.__swaggerPathGenerated);
       }
-      this.config.__swaggerPathGenerated = this.getProjectRoot('node_modules', 'yalento-fullstack', 'lib', 'bin', 'swagger.json');
+      this.config.__swaggerPathGenerated = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'swagger.json');
       childProcess.execSync(
-        `${this.getProjectRoot('node_modules', '@apidevtools', 'swagger-cli', 'bin', 'swagger-cli.js')} bundle ${this.config.__swaggerPath} -o ${this.config.__swaggerPathGenerated}`
+        `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', '@apidevtools', 'swagger-cli', 'bin', 'swagger-cli.js')} bundle ${this.config.__swaggerPath} -o ${this.config.__swaggerPathGenerated}`
       );
 
       const swagger = require(this.config.__swaggerPathGenerated);
@@ -126,12 +129,12 @@ export class Environment {
 
   private generateChildProcessCodeGenForks(outDirJest: string, outDirApi: string, swagger: any) {
     this.config.__jsonSchemaPath = `${outDirApi}${path.sep}json-schema${path.sep}`;
-    this.config.__codeGenForkPath = this.getProjectRoot('node_modules', 'yalento-fullstack', 'lib', 'bin', 'codeGenFork.js');
+    this.config.__codeGenForkPath = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codeGenFork.js');
     let source = `const fs = require('fs');
     const childProcess = require('child_process');
     childProcess.execSync('${this.config.__codeGenCommandApi}', {stdio : 'pipe'});
     childProcess.execSync('${this.config.__codeGenCommandJest}', {stdio : 'pipe'});
-    childProcess.execSync('node ${this.getProjectRoot('node_modules', 'ts-interface-builder', 'bin', 'ts-interface-builder')} ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
+    childProcess.execSync('node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack','node_modules', 'ts-interface-builder', 'bin', 'ts-interface-builder')} ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
     let stdout;
     let data;
     `;
@@ -148,7 +151,7 @@ export class Environment {
     Object.keys(swagger.definitions).forEach((model) => {
       source += `
       stdout = childProcess.execSync(
-        '${this.getProjectRoot('node_modules', 'typescript-json-schema', 'bin', 'typescript-json-schema')} --required ${outDirApi}${path.sep}api.ts ${model}'
+        '${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack','node_modules','typescript-json-schema', 'bin', 'typescript-json-schema')} --required ${outDirApi}${path.sep}api.ts ${model}'
       );
       data = 'export const ${model.trim()} = ' + stdout.toString() + ';';
       fs.writeFileSync(
@@ -171,9 +174,6 @@ export class Environment {
       });
       source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}models${path.sep}index.ts\`, \`${indexData}\`);`;
 
-      source += `childProcess.execSync(
-        "${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__jsonSchemaPath}models${path.sep}index.ts"
-      );`;
 
       const validatorCode = `import * as schema from './models';
 import * as Ajv from 'ajv';
@@ -212,19 +212,8 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     export * from '.${path.sep}api/api';`;
 
     source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);`;
-    fs.writeFileSync(this.config.__codeGenForkPath, source);
 
-
-    childProcess.execSync(
-      `${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__generatedCodePath}${path.sep}index.ts`
-    );
-
-
-    childProcess.execSync(
-      `${this.getProjectRoot('node_modules', 'typescript', 'bin', 'tsc')} ${this.config.__jsonSchemaPath}index.ts`
-    );
-
-    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.d.ts\`, \`${indexApiCode}\`);`;
+    source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});`;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
 
 
@@ -258,12 +247,13 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
       __codeGenForkPath: '',
       __codeGenCommandApi: '',
       __codeGenCommandJest: '',
+      __tscCommand: `node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript','bin','tsc')} --project ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'tsconfig.json')}`,
       __firebaseRcPath: this.getProjectRoot('.firebaserc'),
       __firebasePath: this.getProjectRoot('firebase.json'),
-      __codeGenPath: this.getProjectRoot('node_modules', 'yalento-fullstack', 'lib', 'bin', 'codegen'),
+      __codeGenPath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codegen'),
       __angularPackageJsonPath: this.getProjectRoot('package.json'),
       __swaggerPath: this.getProjectRoot('swagger.yaml'),
-      __generatedCodePath: this.getProjectRoot('node_modules', 'yalento-fullstack', 'lib'),
+      __generatedCodePath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName),
       __angularDistPath: angular.projects[angular.defaultProject].architect.build.options
         .outputPath,
       __angularTsConfigPath: this.getProjectRoot('tsconfig.json'),
