@@ -48,7 +48,7 @@ export class Environment {
   private readonly SWAGGER_CODEGEN_SOURCEURL = 'https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.14/swagger-codegen-cli-2.4.14.jar';
   private readonly SWAGGER_CODEGEN_VERSION = '2.4.14';
   private tempPathName = 'generated';
-  private nodeModulesPathName = 'node_modules2';
+  private nodeModulesPathName = 'node_modules';
 
   constructor() {
 
