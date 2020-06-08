@@ -40,22 +40,28 @@ program
 
 
     if (env.watch) {
+      let isRunning = false;
       const files = [config.__firebasePath, config.__firebaseRcPath, config.__swaggerPath];
       for (const file of files) {
         fs.watchFile(file, (curr, prev) => {
+
           console.clear();
           console.log(chalk.yellow(path.basename(file + ' changed, re-compiling..')));
           compiler.stop();
           if (forked) {
             forked.kill('SIGHUP');
           }
-          setTimeout(() => {
-            forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
-            forked.on('close', () => {
-              console.clear();
-              console.log(chalk.yellow('Idle'));
-            });
-          }, 500);
+          if (!isRunning) {
+            setTimeout(() => {
+              forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
+              isRunning = true;
+              forked.on('close', () => {
+                isRunning = false;
+                console.clear();
+                console.log(chalk.yellow('Idle'));
+              });
+            }, 500);
+          }
         });
       }
     }
