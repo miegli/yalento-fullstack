@@ -17,11 +17,6 @@
     "noImplicitAny": false
   },
   "include": [
-    "temp"
-  ],
-  "exclude": [
-    "node_modules",
-    "templates",
-    "**/__tests__/*"
+    "generated"
   ]
 }

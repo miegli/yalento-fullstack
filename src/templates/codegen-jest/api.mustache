@@ -3,7 +3,7 @@
 import * as url from "url";
 import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
-import apiTI from "../../../projects/sdk/src/lib/api/api-ti";
+import apiTI from "../api/api-ti";
 import {createCheckers} from "ts-interface-checker";
 const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
 const ti = createCheckers(apiTI);

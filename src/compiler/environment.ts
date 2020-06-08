@@ -68,6 +68,11 @@ export class Environment {
       childProcess.execSync(
         `npm install --ignore-scripts`
       );
+
+      const target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`;
+      const source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'tsconfig.json')}`;
+      fs.copyFileSync(source, target);
+
     }
   }
 
@@ -143,7 +148,7 @@ export class Environment {
     const childProcess = require('child_process');
     childProcess.execSync('${this.config.__codeGenCommandApi}', {stdio : 'pipe'});
     childProcess.execSync('${this.config.__codeGenCommandJest}', {stdio : 'pipe'});
-    childProcess.execSync('node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack','node_modules', 'ts-interface-builder', 'bin', 'ts-interface-builder')} ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
+    childProcess.execSync('node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'ts-interface-builder', 'bin', 'ts-interface-builder')} ${outDirJest}${path.sep}api.ts -o ${outDirApi}', {stdio : 'pipe'});
     let stdout;
     let data;
     `;
@@ -160,7 +165,7 @@ export class Environment {
     Object.keys(swagger.definitions).forEach((model) => {
       source += `
       stdout = childProcess.execSync(
-        '${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack','node_modules','typescript-json-schema', 'bin', 'typescript-json-schema')} --required ${outDirApi}${path.sep}api.ts ${model}'
+        '${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript-json-schema', 'bin', 'typescript-json-schema')} --required ${outDirApi}${path.sep}api.ts ${model}'
       );
       data = 'export const ${model.trim()} = ' + stdout.toString() + ';';
       fs.writeFileSync(
@@ -256,7 +261,7 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
       __codeGenForkPath: '',
       __codeGenCommandApi: '',
       __codeGenCommandJest: '',
-      __tscCommand: `node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript','bin','tsc')} --project ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'tsconfig.json')}`,
+      __tscCommand: `node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript', 'bin', 'tsc')} --project ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`,
       __firebaseRcPath: this.getProjectRoot('.firebaserc'),
       __firebasePath: this.getProjectRoot('firebase.json'),
       __codeGenPath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codegen'),
