@@ -56,10 +56,16 @@ export class Environment {
 
   async getConfig(isTestingMode: boolean): Promise<Config> {
     this.config = this.generateConfig(isTestingMode);
+    this.installDependencies();
     this.updateAngularPackageJson();
     this.createSwaggerYamlIfEmpty();
     await this.installSwaggerCodeGen().finally();
     return this.config;
+  }
+
+  private installDependencies() {
+    console.log(process.env);
+    process.exit(1);
   }
 
   private installSwaggerCodeGen() {
