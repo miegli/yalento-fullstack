@@ -1,5 +1,6 @@
 import {Environment} from './environment';
 import {Compile} from './commands/compile';
+import set = Reflect.set;
 
 const {fork} = require('child_process');
 const path = require('path');
@@ -48,11 +49,13 @@ program
           if (forked) {
             forked.kill('SIGHUP');
           }
-          forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
-          forked.on('close', () => {
-            console.clear();
-            console.log(chalk.yellow('Idle'));
-          });
+          setTimeout(() => {
+            forked = fork('node_modules/yalento-fullstack/lib/compiler/yalento-fullstack', ['compile', 'no-progress']);
+            forked.on('close', () => {
+              console.clear();
+              console.log(chalk.yellow('Idle'));
+            });
+          }, 500);
         });
       }
     }

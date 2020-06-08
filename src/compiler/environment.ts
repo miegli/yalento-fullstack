@@ -249,7 +249,9 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
   private updateAngularPackageJson() {
     const packageJson = require(this.config.__angularPackageJsonPath);
     packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
-    packageJson.scripts['yalento'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile --watch';
+    packageJson.scripts['yalento'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack';
+    packageJson.scripts['yalento:compile'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile';
+    packageJson.scripts['yalento:watch'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile --watch';
 
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }
