@@ -100,7 +100,7 @@ export class Environment {
       fs.writeFileSync(this.config.__swaggerPathGenerated, JSON.stringify(swagger));
       /* tslint:disable */
       this.config.__codeGenCommandJest = `java -jar ${this.config.__codeGenPath} generate -i ${this.config.__swaggerPathGenerated} -l typescript-fetch -o ${outDirJest} -t ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates')}${path.sep}codegen-jest`;
-      this.config.__codeGenCommandApi = `java -jar ${this.config.__codeGenPath} generate -i ${this.config.__swaggerPathGenerated} -l typescript-fetch -o ${outDirApi} -t ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates')}${path.sep}}codegen-api`;
+      this.config.__codeGenCommandApi = `java -jar ${this.config.__codeGenPath} generate -i ${this.config.__swaggerPathGenerated} -l typescript-fetch -o ${outDirApi} -t ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates')}${path.sep}codegen-api`;
       this.generateChildProcessCodeGenForks(outDirJest, outDirApi, swagger);
 
       let versionCheck = true;
