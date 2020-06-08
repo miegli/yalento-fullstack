@@ -64,8 +64,11 @@ export class Environment {
   }
 
   private installDependencies() {
-    console.log(process.env);
-    process.exit(1);
+    if (process.env.npm_lifecycle_event === 'postinstall') {
+      childProcess.execSync(
+        `npm install --ignore-scripts`
+      );
+    }
   }
 
   private installSwaggerCodeGen() {
