@@ -169,7 +169,9 @@ export class Environment {
   private generateChildProcessCodeGenForks(outDirJest: string, outDirApi: string, swagger: any) {
     this.config.__jsonSchemaPath = `${outDirApi}${path.sep}json-schema${path.sep}`;
     this.config.__codeGenForkPath = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codeGenFork.js');
-    let source = `const fs = require('fs');
+    let source = `
+    const fse = require('fs-extra');
+    const fs = require('fs');
     const childProcess = require('child_process');
     childProcess.execSync('${this.config.__codeGenCommandApi}', {stdio : 'pipe'});
     childProcess.execSync('${this.config.__codeGenCommandJest}', {stdio : 'pipe'});
@@ -260,16 +262,17 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
 
     source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});
     `;
-    fs.writeFileSync(this.config.__codeGenForkPath, source);
+
 
 
     const firebaseNodeModules = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
     const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
     const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
     if (fs.existsSync(firebaseNodeModules) && fs.existsSync(firebaseYalentoFullstackTarget) && fs.existsSync(`${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api`)) {
-      fse.copySync(`${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api`, `${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api`);
+      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
     }
 
+    fs.writeFileSync(this.config.__codeGenForkPath, source);
 
   }
 
