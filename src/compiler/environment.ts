@@ -227,7 +227,7 @@ type IDataType = ${dataTypeStringEnum};
  * @param dataType
  * @param data
  */
-export function isInvalide(dataType: IDataType, data: any): boolean | Array<ErrorObject> | any {
+export function isInvalid(dataType: IDataType, data: any): boolean | Array<ErrorObject> | any {
   const ajv = Ajv({allErrors: true});
   let valid: any;
 
