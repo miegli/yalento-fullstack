@@ -66,6 +66,7 @@ export class Environment {
 
   private installDependencies() {
     if (process.env.npm_lifecycle_event === 'postinstall') {
+      console.log(process.env);
       childProcess.execSync(
         `npm install --ignore-scripts`
       );
@@ -87,15 +88,6 @@ export class Environment {
         if (firebase && firebase.hosting && firebase.hosting.public) {
           firebase.hosting.public = this.config.__angularDistPath;
           fs.writeFileSync(this.config.__firebasePath, beautify(JSON.stringify(firebase)));
-        }
-      }
-
-      const functionsTsLintPath = this.getProjectRoot('functions', 'tslint.json');
-      if (fs.existsSync(functionsTsLintPath)) {
-        const tslint = JSON.parse(fs.readFileSync(functionsTsLintPath).toString());
-        if (tslint && tslint.rules) {
-          tslint.rules['no-implicit-dependencies'] = false;
-          fs.writeFileSync(functionsTsLintPath, beautify(JSON.stringify(tslint)));
         }
       }
 
