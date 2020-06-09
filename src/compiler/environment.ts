@@ -90,6 +90,15 @@ export class Environment {
         }
       }
 
+      const functionsTsLintPath = this.getProjectRoot('functions', 'tslint.json');
+      if (fs.existsSync(functionsTsLintPath)) {
+        const tslint = JSON.parse(fs.readFileSync(functionsTsLintPath).toString());
+        if (tslint && tslint.rules) {
+          tslint.rules['no-implicit-dependencies'] = false;
+          fs.writeFileSync(functionsTsLintPath, beautify(JSON.stringify(tslint)));
+        }
+      }
+
     }
   }
 
@@ -412,6 +421,7 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
   private getFirebase(): any {
     return JSON.parse(fs.readFileSync(this.getProjectRoot('firebase.json')).toString());
   }
+
 
   private getFirebaseRc(): any {
 
