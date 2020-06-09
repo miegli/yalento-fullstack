@@ -12,6 +12,10 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 
 ### Install
 
+Requirements: 
+- [Node.js](https://nodejs.org/en/download/)
+- [Java SE Runtime](https://www.oracle.com/technetwork/java/javase/documentation/index.html)
+
 #### 1. Global packages
 `npm install -g firebase-tools @angular/cli`
 
