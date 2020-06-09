@@ -11,8 +11,9 @@
     "prepublishOnly": "npm run lint",
     "preversion": "npm run build && npm run lint",
     "test": "npm run build && nyc --reporter=lcov --reporter=text-summary node_modules/.bin/mocha --opts ./mocha.opts src",
+    "test-api": "node ./node_modules/jest/bin/jest.js lib/test/api.js",
     "version": "git add -A src",
-    "postinstall": "node ./lib/compiler/yalento-fullstack.js compile"
+    "postinstall": "node ./lib/compiler/yalento-fullstack.js compile --test"
   },
   "devDependencies": {
     "swagger": "^0.7.5",

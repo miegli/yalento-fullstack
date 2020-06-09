@@ -69,8 +69,16 @@ export class Environment {
         `npm install --ignore-scripts`
       );
 
-      const target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`;
-      const source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'tsconfig.json')}`;
+      let target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`;
+      let source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'tsconfig.json')}`;
+      fs.copyFileSync(source, target);
+
+      target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'jest.config.js')}`;
+      source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'jest.config.js')}`;
+      fs.copyFileSync(source, target);
+
+      target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'bitbucket-pipelines.yml')}`;
+      source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'bitbucket-pipelines.yml')}`;
       fs.copyFileSync(source, target);
 
     }
@@ -102,6 +110,7 @@ export class Environment {
       const swagger = require(this.config.__swaggerPathGenerated);
       swagger.host = this.config.apiHost;
       swagger.basePath = this.config.apiBaseUrl + swagger.basePath;
+      swagger.schemes = [this.config.production ? 'https' : 'http'];
       fs.writeFileSync(this.config.__swaggerPathGenerated, JSON.stringify(swagger));
       /* tslint:disable */
       this.config.__codeGenCommandJest = `java -jar ${this.config.__codeGenPath} generate -i ${this.config.__swaggerPathGenerated} -l typescript-fetch -o ${outDirJest} -t ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates')}${path.sep}codegen-jest`;
@@ -251,7 +260,12 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
     packageJson.scripts['yalento'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack';
     packageJson.scripts['yalento:compile'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile';
+    packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
+    packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && ng test --watch=false --progress=false\"';
+    packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
     packageJson.scripts['yalento:watch'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile --watch';
+    packageJson.scripts['yalento:build:app'] = 'ng build --prod';
+    packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
 
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }
