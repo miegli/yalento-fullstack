@@ -127,6 +127,8 @@ export class Environment {
 
       let versionCheck = true;
 
+      this.createSwaggerUi();
+
       if (!fs.existsSync(path.dirname(this.config.__codeGenPath))) {
         fs.mkdirSync(path.dirname(this.config.__codeGenPath), {recursive: true});
       }
@@ -254,6 +256,84 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     `;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
 
+
+  }
+
+  private createSwaggerUi() {
+
+    const targetRoot = this.getProjectRoot(this.config.__angularDistPath, 'swagger');
+    const swaggerSourceRoot = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'swagger-ui-dist');
+
+    if (!fs.existsSync(targetRoot)) {
+      fs.mkdirSync(targetRoot, {recursive: true});
+    }
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui.js`,
+      `${targetRoot}${path.sep}swagger-ui.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui-standalone-preset.js`,
+      `${targetRoot}${path.sep}swagger-ui-standalone-preset.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui.css`,
+      `${targetRoot}${path.sep}swagger-ui.css`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui-bundle.js`,
+      `${targetRoot}${path.sep}swagger-ui-bundle.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}index.js`,
+      `${targetRoot}${path.sep}index.js`
+    );
+
+    fs.copyFileSync(this.config.__swaggerPathGenerated, this.getProjectRoot(this.config.__angularDistPath, 'swagger', 'swagger.json'));
+
+    const swaggerUi = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="swagger-ui.css">
+    <script src="./swagger-ui-bundle.js"> </script>
+    <script src="./swagger-ui-standalone-preset.js"> </script>
+</head>
+
+<body>
+<div id="swagger-ui"></div>
+
+<script>
+  window.onload = function () {
+
+    // Begin Swagger UI call region
+    const ui = SwaggerUIBundle({
+      "dom_id": "#swagger-ui",
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      plugins: [
+        SwaggerUIBundle.plugins.DownloadUrl
+      ],
+      layout: "BaseLayout",
+      validatorUrl: "https://validator.swagger.io/validator",
+      url: "/swagger/swagger.json",
+    })
+    window.ui = ui
+  }
+</script>
+</body>
+</html>
+`;
+
+    fs.writeFileSync(`${targetRoot}${path.sep}index.html`, swaggerUi);
 
   }
 

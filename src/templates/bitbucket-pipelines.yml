@@ -19,6 +19,7 @@ pipelines:
           - npm run yalento:compile
           - npm run yalento:build:app
           - npm run yalento:build:functions
+          - npm run yalento:compile
           - pipe: atlassian/firebase-deploy:0.3.8
             variables:
               FIREBASE_TOKEN: "$FIREBASE_TOKEN_CI"
