@@ -262,12 +262,18 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     const firebaseNodeModules = this.getProjectRoot('functions', 'lib', 'yalento-fullstack');
     const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
     const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
+    const functionsPostInstallScript = `${firebaseNodeModules}${path.sep}lib${path.sep}compiler${path.sep}yalento-fullstack.js`;
+
 
     if (!fs.existsSync(firebaseNodeModules)) {
       fs.mkdirSync(firebaseNodeModules, {recursive: true});
     }
 
-    fs.writeFileSync(`${firebaseNodeModules}${path.sep}lib${path.sep}compiler${path.sep}yalento-fullstack.js`, 'console.log("yalento installed");');
+    if (!fs.existsSync(path.dirname(functionsPostInstallScript))) {
+      fs.mkdirSync(path.dirname(functionsPostInstallScript), {recursive: true});
+    }
+
+    fs.writeFileSync(functionsPostInstallScript, 'console.log("yalento installed");');
 
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
