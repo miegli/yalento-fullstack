@@ -267,6 +267,8 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
       fs.mkdirSync(firebaseNodeModules, {recursive: true});
     }
 
+    fs.writeFileSync(`${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}compiler${path.sep}yalento-fullstack.js`, 'console.log("yalento installed");');
+
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.d.ts');`;
@@ -275,6 +277,8 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseNodeModules}${path.sep}lib${path.sep}api');`;
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseNodeModules}${path.sep}lib${path.sep}index.js');`;
     source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseNodeModules}${path.sep}lib${path.sep}index.d.ts');`;
+
+
 
 
     fs.writeFileSync(this.config.__codeGenForkPath, source);
