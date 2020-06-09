@@ -263,7 +263,6 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
     packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && ng test --watch=false --progress=false\"';
     packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
-    packageJson.scripts['yalento:watch'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile --watch';
     packageJson.scripts['yalento:build:app'] = 'ng build --prod';
     packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
 
