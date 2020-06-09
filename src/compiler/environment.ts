@@ -1,5 +1,6 @@
 import {swaggerTemplate} from '../templates/swagger';
 
+const fse = require("fs-extra");
 const fs = require('fs');
 const path = require('path');
 const beautify = require('js-beautify').js;
@@ -255,6 +256,14 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});
     `;
     fs.writeFileSync(this.config.__codeGenForkPath, source);
+
+
+    const firebaseNodeModules = this.getProjectRoot('functions', this.nodeModulesPathName);
+    const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
+    const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
+    if (fs.existsSync(firebaseNodeModules)) {
+      fs.copySync(firebaseYalentoFullstackSource, firebaseYalentoFullstackTarget);
+    }
 
 
   }
