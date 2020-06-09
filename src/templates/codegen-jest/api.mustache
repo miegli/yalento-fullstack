@@ -9,7 +9,7 @@ const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
 const ti = createCheckers(apiTI);
 
 //@ts-ignore
-jest.setTimeout(500);
+jest.setTimeout(5000);
 
 export function strictCheck(dataType: string, data: any) {
 return strictCheck(dataType, data);
