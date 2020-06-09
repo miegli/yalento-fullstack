@@ -65,8 +65,12 @@ export class Environment {
   }
 
   private installDependencies() {
-    if (process.env.npm_lifecycle_event === 'postinstall') {
-      console.log(process.env);
+    if (process.env.npm_lifecycle_event === 'postinstall' && process.env.PWD) {
+      const functionsPath = `functions${path.sep}node_modules${path.sep}yalento-fullstack`;
+      if (process.env.PWD.substr(-1 * functionsPath.length) === functionsPath) {
+        return;
+      }
+
       childProcess.execSync(
         `npm install --ignore-scripts`
       );
