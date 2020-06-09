@@ -33,6 +33,7 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 - `npm run yalento:compile:watch`: Start yalento im live-compiling mode.
 - `npm run swagger:edit`: Open swagger editor ui in browser.
 - `npm run yalento:test:api`: Test swagger definitions against firebase backend.
+- `npm run yalento:firebase:emulate`: Start emulating the firebase backend.
 
 #### 6. Having fun
 
