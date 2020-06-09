@@ -266,6 +266,8 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
     if (fs.existsSync(firebaseNodeModules) && fs.existsSync(firebaseYalentoFullstackTarget)) {
       source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
+      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
+      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.d.ts');`;
     }
 
     fs.writeFileSync(this.config.__codeGenForkPath, source);
