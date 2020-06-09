@@ -40,7 +40,8 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 - `npm run swagger:edit`: Open swagger editor ui in browser.
 - `npm run yalento:test:api`: Test swagger definitions against firebase backend.
 
-You can edit ./swagger.yaml in your project root in your ide as well. 'yalento:compile:watch' is detecting changes.
+You can edit ./swagger.yaml in your project root in your ide as well. 'yalento:compile:watch' is detecting changes. 
+The generated swagger documentation get published automatically here: /swagger/index.html 
 
 #### 6. Having fun
 
@@ -69,4 +70,7 @@ const animals: Array<IEntity<Pet>> = repository.select({ where: 'name LIKE "Bunn
 ```
 Read more about [Yalento](https://www.npmjs.com/package/yalento).
 
+#### 7. Publishing your app to production
 
+Yalento Fullstack generates automatically a ready to use bitbucket-pipelines.yml 
+Just add add repository variables `FIREBASE_TOKEN_CI` with your firebase cli token [how to generate read here](https://firebase.google.com/docs/cli/#deployment).
