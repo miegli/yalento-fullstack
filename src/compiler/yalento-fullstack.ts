@@ -1,6 +1,5 @@
 import {Environment} from './environment';
 import {Compile} from './commands/compile';
-import set = Reflect.set;
 
 const {fork} = require('child_process');
 const path = require('path');
@@ -9,6 +8,14 @@ const {createCommand} = require('commander');
 const program = createCommand();
 const environment = new Environment();
 const chalk = require('chalk');
+
+
+if (process.env.PWD) {
+  const functionsPath = `functions${path.sep}node_modules${path.sep}yalento-fullstack`;
+  if (process.env.PWD.substr(-1 * functionsPath.length) === functionsPath) {
+    process.exit(0);
+  }
+}
 
 program
   .version('0.0.1');
