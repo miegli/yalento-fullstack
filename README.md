@@ -28,17 +28,13 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 #### 4. Add yalento packages
 `npm add yalento-fullstack yalento`
 
-#### 5. Complete installation
-
-`npm install`
-
-#### 6. Ready to develop
+#### 5. Ready to develop
 
 - `npm run yalento:compile:watch`: Start yalento im live-compiling mode.
 - `npm run swagger:edit`: Open swagger editor ui in browser.
 - `npm run yalento:test:api`: Test swagger definitions against firebase backend.
 
-#### 7. Having fun
+#### 6. Having fun
 
 **Import automatically generated models and schema validators**
 ```ts

@@ -77,7 +77,7 @@ export class Environment {
       source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'jest.config.js')}`;
       fs.copyFileSync(source, target);
 
-      target = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'bitbucket-pipelines.yml')}`;
+      target = `${this.getProjectRoot('bitbucket-pipelines.yml')}`;
       source = `${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'lib', 'templates', 'bitbucket-pipelines.yml')}`;
       fs.copyFileSync(source, target);
 
@@ -85,7 +85,7 @@ export class Environment {
         const firebase = this.getFirebase();
         if (firebase && firebase.hosting && firebase.hosting.public) {
           firebase.hosting.public = this.config.__angularDistPath;
-          fs.writeFileSync(this.config.__firebasePath, JSON.stringify(firebase));
+          fs.writeFileSync(this.config.__firebasePath, beautify(JSON.stringify(firebase)));
         }
       }
 
