@@ -5,7 +5,7 @@ This awesome package creates a fullstack web application. Angular as the fronten
 - Including bitbucket pipeline
 - Automated generation of models and json-schema based on swagger definitions
 - Swagger editor included
-- Compile time and runtime checks integrated
+- Compile time and runtime checks (interfaces and validators)
 
 ### Install
 
@@ -37,7 +37,7 @@ This awesome package creates a fullstack web application. Angular as the fronten
 
 #### 7. Having fun
 
-**Import automatically generated models and helper**
+**Import automatically generated models and schema validators**
 ```ts
 import {Pet, isInvalide} from 'yalento-fullstack';`
 
@@ -51,10 +51,14 @@ console.log(isInvalide("Pet", pet));
 - This will console.log an error with detailed infos wy the data is not matching against the definitions in ./swagger.yaml (runtime check)
 - The above code cannot be built using the typescript compiler because the interface is wrong (compile time check)
 
-**Compatible with Yalento** 
+**Compatible with Yalento (Browser and node.js)** 
 ```ts
+import { Pet } from 'yalento-fullstack';`
 import { Repository, IEntity } from 'yalento';
+
 const repository: Repository<Pet> = new Repository(Pet, 'Pet');
+const bunny: IEntity<Pet> = await repository.create({ name: 'Bunny'});
+const animals: Array<IEntity<Pet>> = repository.select({ where: 'name LIKE "Bunny"'}).getResults();
 ```
 Read more about [Yalento](https://www.npmjs.com/package/yalento).
 
