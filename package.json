@@ -51,5 +51,14 @@
   },
   "files": [
     "lib/**/*"
+  ],
+  "keywords": [
+    "swagger",
+    "firebase",
+    "angular",
+    "api",
+    "json-schema",
+    "yalento",
+    "bitbucket"
   ]
 }
