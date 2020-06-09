@@ -20,7 +20,7 @@ pipelines:
           - npm run yalento:build:app
           - npm run yalento:build:functions
           - npm run yalento:compile
-          - node node_modules/yalento-fullstack/lib/templates/predeployfunctions.js
+          - node ./node_modules/yalento-fullstack/lib/templates/predeployfunctions.js
           - pipe: atlassian/firebase-deploy:0.3.8
             variables:
               FIREBASE_TOKEN: "$FIREBASE_TOKEN_CI"
