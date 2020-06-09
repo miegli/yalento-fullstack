@@ -46,7 +46,7 @@ You can edit ./swagger.yaml in your project root in your ide as well. 'yalento:c
 
 **Import automatically generated models and schema validators**
 ```ts
-import {Pet, isInvalide} from 'yalento-fullstack';`
+import {Pet, isInvalide} from 'yalento-fullstack';
 
 const pet: Pet = {
   name: 'bunny'
@@ -60,7 +60,7 @@ console.log(isInvalide("Pet", pet));
 
 **Compatible with Yalento (Browser and node.js)** 
 ```ts
-import { Pet } from 'yalento-fullstack';`
+import { Pet } from 'yalento-fullstack';
 import { Repository, IEntity } from 'yalento';
 
 const repository: Repository<Pet> = new Repository(Pet, 'Pet');
