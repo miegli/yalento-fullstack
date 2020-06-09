@@ -1,6 +1,9 @@
 ## Yalento fullstack
 
-This awesome package creates a fullstack web application. Angular as the frontend and firebase as the backend.
+This awesome package creates a fullstack web application. Angular as the frontend and firebase as the backend. 
+There is a simple but fully automated workflow with swagger definitions from that integration tests and models are automatically generated.
+With this package, the Swagger sample project http://editor.swagger.io/ can be implemented in a few minutes.
+
 - Automated integration tests (swagger definitions against backend)
 - Including bitbucket pipeline
 - Automated generation of models and json-schema based on swagger definitions
