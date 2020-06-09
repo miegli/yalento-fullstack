@@ -353,7 +353,7 @@ export function isInvalide(dataType: IDataType, data: any): boolean | Array<Erro
     packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
     packageJson.scripts['yalento:build:app'] = 'ng build --prod';
     packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
-    packageJson.scripts['yalento:firebase:emulate'] = 'firebase emulators:startd';
+    packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch\"';
 
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }

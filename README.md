@@ -22,6 +22,7 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 - Add database, firestore, functions, hosting and emulators. 
 - Select always default values if you are asked from firebase cli.
 - Select functions, firestore, database and hosting for Emulator Setup.
+- Select typescript if you are asked for.
 
 `firebase init `
 
@@ -30,10 +31,16 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 
 #### 5. Ready to develop
 
-- `npm run yalento:compile:watch`: Start yalento im live-compiling mode.
+**Fullstck developing with live-reload**
+- `npm run start` (ng serve)
+- `npm run yalento:compile:watch` 
+- `npm run yalento:backend:serve`
+
+**More npm commands**
 - `npm run swagger:edit`: Open swagger editor ui in browser.
 - `npm run yalento:test:api`: Test swagger definitions against firebase backend.
-- `npm run yalento:firebase:emulate`: Start emulating the firebase backend.
+
+You can edit ./swagger.yaml in your project root in your ide as well. 'yalento:compile:watch' is detecting changes.
 
 #### 6. Having fun
 
