@@ -10,9 +10,8 @@ With this package, the Swagger sample project http://editor.swagger.io/ can be i
 - Swagger editor included
 - Compile time and runtime checks (interfaces and validators)
 
-### Install
+### Install first
 
-Requirements: 
 - [Node.js](https://nodejs.org/en/download/)
 - [Java SE Runtime](https://www.oracle.com/technetwork/java/javase/documentation/index.html)
 
@@ -60,7 +59,7 @@ const pet: Pet = {
 console.log(isInvalide("Pet", pet));
 
 ```
-- This will console.log an error with detailed infos wy the data is not matching against the definitions in ./swagger.yaml (runtime check)
+- This will console.log an error with detailed infos why data is not matching against the definitions in ./swagger.yaml (runtime check)
 - The above code cannot be built using the typescript compiler because the interface is wrong (compile time check)
 
 **Compatible with Yalento (Browser and node.js)** 
