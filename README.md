@@ -72,5 +72,5 @@ Read more about [Yalento](https://www.npmjs.com/package/yalento).
 
 #### 7. Publishing your app to production
 
-Yalento Fullstack generates automatically a ready to use bitbucket-pipelines.yml 
+Yalento Fullstack generates automatically a ready to use bitbucket-pipelines.yml.
 Just add add repository variables `FIREBASE_TOKEN_CI` with your firebase cli token [how to generate read here](https://firebase.google.com/docs/cli/#deployment).
