@@ -1,0 +1,1 @@
+const fs = require('fs'); const f = '../../../functions/package.json'; if (fs.existsSync(f)) {const p = require(f); p.dependencies["yalento-fullstack"] = 'file:lib/yalento-fullstack'; fs.writeFileSync(f, JSON.stringify(p));}

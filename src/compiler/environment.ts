@@ -1,6 +1,5 @@
 import {swaggerTemplate} from '../templates/swagger';
 
-const fse = require('fs-extra');
 const fs = require('fs');
 const path = require('path');
 const beautify = require('js-beautify').js;
@@ -260,15 +259,20 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     `;
 
 
-
-    const firebaseNodeModules = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
-    const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
+    const firebaseNodeModules = this.getProjectRoot('functions', 'lib', 'yalento-fullstack');
     const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
-    if (fs.existsSync(firebaseNodeModules) && fs.existsSync(firebaseYalentoFullstackTarget)) {
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.d.ts');`;
+
+    if (!fs.existsSync(firebaseNodeModules)) {
+      fs.mkdirSync(firebaseNodeModules, {recursive: true});
     }
+
+
+
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}package.json', '${firebaseNodeModules}${path.sep}package.json');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseNodeModules}${path.sep}lib${path.sep}api');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseNodeModules}${path.sep}lib${path.sep}index.js');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseNodeModules}${path.sep}lib${path.sep}index.d.ts');`;
+
 
     fs.writeFileSync(this.config.__codeGenForkPath, source);
 
