@@ -386,7 +386,7 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     packageJson.scripts['yalento:build:app'] = 'ng build --prod --delete-output-path=false';
     packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
     packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch --preserveWatchOutput\"';
-    packageJson.scripts['yalento:run'] = 'npm run yalento:compile && npm run yalento:build:app && cd functions && tsc && firebase emulators:start';
+    packageJson.scripts['yalento:run'] = 'npm run yalento:compile && npm run yalento:build:app && npm run yalento:build:functions && firebase emulators:start';
 
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }
