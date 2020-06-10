@@ -381,11 +381,12 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
     packageJson.scripts['yalento'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack';
     packageJson.scripts['yalento:compile'] = 'node ./node_modules/yalento-fullstack/lib/compiler/yalento-fullstack compile';
     packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
-    packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && ng test --browsers ChromeHeadless --watch=false --progress=false\"';
-    packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
-    packageJson.scripts['yalento:build:app'] = 'ng build --prod';
+    packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && ng test --browsers ChromeHeadless --watch=false --progress=false\"';
+    packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
+    packageJson.scripts['yalento:build:app'] = 'ng build --prod --delete-output-path=false';
     packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
-    packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch\"';
+    packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch --preserveWatchOutput\"';
+    packageJson.scripts['yalento:run'] = 'npm run yalento:compile && npm run yalento:build:app && cd functions && tsc && firebase emulators:start';
 
     fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
   }
