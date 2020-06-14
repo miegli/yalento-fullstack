@@ -378,7 +378,7 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
   private updateAngularPackageJson() {
     const packageJson = require(this.config.__angularPackageJsonPath);
     packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
-    packageJson.scripts['yalento'] = 'cd ./node_modules/yalento-fullstack && npm i && node .lib/compiler/yalento-fullstack';
+    packageJson.scripts['yalento'] = 'cd ./node_modules/yalento-fullstack && npm i --ignore-scripts && node lib/compiler/yalento-fullstack';
     packageJson.scripts['yalento:compile'] = 'npm run yalento -- compile';
     packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
     packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && ng test --browsers ChromeHeadless --watch=false --progress=false\"';
