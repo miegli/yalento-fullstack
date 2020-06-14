@@ -5,10 +5,8 @@ import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
 import apiTI from "../api/api-ti";
 import {createCheckers} from "ts-interface-checker";
-const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
+const BASE_PATH = "http://localhost:5101/juniorenliga-5dc68/us-central1/api".replace(/\/+$/, "");
 const ti = createCheckers(apiTI);
-
-
 //@ts-ignore
 jest.setTimeout(5000);
 
@@ -62,8 +60,8 @@ if (simpleType === 'Date') {
 return new Date();
 }
 
-if (typeof simpleType === 'string' && simpleType.indexOf("'") >= 0) {
-return simpleType.substr(1).split("'")[0];
+if (typeof simpleType === 'string' && simpleType.indexOf('\'') >= 0) {
+return simpleType.substr(1).split('\'')[0];
 }
 
 if (ti[simpleType] !== undefined) {
@@ -84,7 +82,7 @@ return data;
 
 return null;
 
-}
+};
 
 const getSampleData = (dataType: any) => {
 
@@ -99,7 +97,7 @@ return [getSampleDataFromSimpleType(dataType.substr(6, dataType.length - 7))];
 
 return getSampleDataFromSimpleType(dataType);
 
-}
+};
 
 
 if (ti[property] === undefined) {
@@ -123,6 +121,7 @@ return data;
 
 // call to ensure execution once
 getTiSampleData('string');
+
 
 /**
 *
