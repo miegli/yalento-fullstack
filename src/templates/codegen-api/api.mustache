@@ -342,6 +342,9 @@ export class {{classname}} extends BaseAPI implements {{classname}}Interface {
 {{^withInterfaces}}
 export class {{classname}} extends BaseAPI {
 {{/withInterfaces}}
+
+    static {{nickname}}Path = `{{{path}}}`;
+
     {{#operation}}
     /**
      * {{&notes}}

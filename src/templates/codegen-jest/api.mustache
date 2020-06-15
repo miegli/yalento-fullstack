@@ -504,6 +504,9 @@ export class {{classname}} extends BaseAPI implements {{classname}}Interface {
 export class {{classname}} extends BaseAPI {
 {{/withInterfaces}}
     {{#operation}}
+
+    static {{nickname}}Path = `{{{path}}}`;
+
     /**
      * {{&notes}}
      {{#summary}}
