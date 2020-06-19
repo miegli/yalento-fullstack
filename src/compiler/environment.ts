@@ -214,6 +214,7 @@ export class Environment {
       let validatorCode = `import * as schema from './models';
 import * as Ajv from 'ajv';
 import {ErrorObject} from "ajv";
+import * as api from '../api';
 
 type IDataType = ${dataTypeStringEnum};
 
