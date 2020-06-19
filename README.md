@@ -50,13 +50,13 @@ The generated swagger documentation get published automatically here: /swagger/i
 
 **Import automatically generated models and schema validators**
 ```ts
-import {Pet, isInvalid} from 'yalento-fullstack';
+import {Pet, Validator} from 'yalento-fullstack';
 
 const pet: Pet = {
   name: 'bunny'
 };
 
-console.log(isInvalid("Pet", pet));
+Validator.Pet(pet).catch((error) => console.log(error));
 
 ```
 - This will console.log an error with detailed infos why data is not matching against the definitions in ./swagger.yaml (runtime check)
