@@ -249,27 +249,28 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
 
       Object.keys(swagger.definitions).forEach((model, i) => {
 
-        validatorCode += `static ${model} = (data: any): Promise<api.${model}> => {
-          return new Promise<api.${model}>(((resolve, reject) => {
+        validatorCode += `
+         static ${model} = (data: any): Promise<api.${model}> => {
+            return new Promise<api.${model}>(((resolve, reject) => {
 
-            if (isInvalid('${model}', data)) {
-              reject(isInvalid('${model}', data));
-            } else {
-              resolve(data);
-            }
+              if (isInvalid('${model}', data)) {
+                reject(isInvalid('${model}', data));
+              } else {
+                resolve(data);
+              }
 
-          }));
-        };
+            }));
+          };
+        `;
 
-      });`;
+      });
 
-        validatorCode += `}`
+      validatorCode += `}`
 
 
-        source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}index.ts\`, \`${validatorCode}\`);
+      source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}index.ts\`, \`${validatorCode}\`);
       `;
 
-      }
 
       const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
     export * from '.${path.sep}api/api';`;
