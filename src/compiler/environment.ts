@@ -213,7 +213,6 @@ export class Environment {
 
       let validatorCode = `import * as schema from './models';
 import * as Ajv from 'ajv';
-import * as api from '../api';
 import {ErrorObject} from "ajv";
 
 type IDataType = ${dataTypeStringEnum};
@@ -245,7 +244,8 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
 }
 `;
 
-      validatorCode += `export class Validator {`
+
+      validatorCode += `export class Validator {`;
 
       Object.keys(swagger.definitions).forEach((model, i) => {
 
@@ -271,86 +271,87 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
       source += `fs.writeFileSync(\`${this.config.__jsonSchemaPath}index.ts\`, \`${validatorCode}\`);
       `;
 
-
-      const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
-    export * from '.${path.sep}api/api';`;
-
-      source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);
-    `;
-
-      source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});
-    `;
-
-
-      const firebaseNodeModules = this.getProjectRoot('functions', 'lib', 'yalento-fullstack');
-      const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
-      const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
-      const functionsPostInstallScript = `${firebaseNodeModules}${path.sep}lib${path.sep}compiler${path.sep}yalento-fullstack.js`;
-
-
-      if (!fs.existsSync(firebaseNodeModules)) {
-        fs.mkdirSync(firebaseNodeModules, {recursive: true});
-      }
-
-      if (!fs.existsSync(path.dirname(functionsPostInstallScript))) {
-        fs.mkdirSync(path.dirname(functionsPostInstallScript), {recursive: true});
-      }
-
-      fs.writeFileSync(functionsPostInstallScript, 'console.log("yalento installed");');
-
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.d.ts');`;
-
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}package.json', '${firebaseNodeModules}${path.sep}package.json');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseNodeModules}${path.sep}lib${path.sep}api');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseNodeModules}${path.sep}lib${path.sep}index.js');`;
-      source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseNodeModules}${path.sep}lib${path.sep}index.d.ts');`;
-
-
-      fs.writeFileSync(this.config.__codeGenForkPath, source);
-
     }
 
-  private
-    createSwaggerUi()
-    {
+    const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
+    export * from '.${path.sep}api/api';`;
 
-      const targetRoot = this.getProjectRoot(this.config.__angularDistPath, 'swagger');
-      const swaggerSourceRoot = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'swagger-ui-dist');
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);
+    `;
 
-      if (!fs.existsSync(targetRoot)) {
-        fs.mkdirSync(targetRoot, {recursive: true});
-      }
+    source += ` childProcess.execSync('${this.config.__tscCommand}', {stdio : 'pipe'});
+    `;
 
-      fs.copyFileSync(
-        `${swaggerSourceRoot}${path.sep}swagger-ui.js`,
-        `${targetRoot}${path.sep}swagger-ui.js`
-      );
 
-      fs.copyFileSync(
-        `${swaggerSourceRoot}${path.sep}swagger-ui-standalone-preset.js`,
-        `${targetRoot}${path.sep}swagger-ui-standalone-preset.js`
-      );
+    const firebaseNodeModules = this.getProjectRoot('functions', 'lib', 'yalento-fullstack');
+    const firebaseYalentoFullstackTarget = this.getProjectRoot('functions', this.nodeModulesPathName, 'yalento-fullstack');
+    const firebaseYalentoFullstackSource = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack');
+    const functionsPostInstallScript = `${firebaseNodeModules}${path.sep}lib${path.sep}compiler${path.sep}yalento-fullstack.js`;
 
-      fs.copyFileSync(
-        `${swaggerSourceRoot}${path.sep}swagger-ui.css`,
-        `${targetRoot}${path.sep}swagger-ui.css`
-      );
 
-      fs.copyFileSync(
-        `${swaggerSourceRoot}${path.sep}swagger-ui-bundle.js`,
-        `${targetRoot}${path.sep}swagger-ui-bundle.js`
-      );
+    if (!fs.existsSync(firebaseNodeModules)) {
+      fs.mkdirSync(firebaseNodeModules, {recursive: true});
+    }
 
-      fs.copyFileSync(
-        `${swaggerSourceRoot}${path.sep}index.js`,
-        `${targetRoot}${path.sep}index.js`
-      );
+    if (!fs.existsSync(path.dirname(functionsPostInstallScript))) {
+      fs.mkdirSync(path.dirname(functionsPostInstallScript), {recursive: true});
+    }
 
-      fs.copyFileSync(this.config.__swaggerPathGenerated, this.getProjectRoot(this.config.__angularDistPath, 'swagger', 'swagger.json'));
+    fs.writeFileSync(functionsPostInstallScript, 'console.log("yalento installed");');
 
-      const swaggerUi = `<!DOCTYPE html>
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}api');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.js');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseYalentoFullstackTarget}${path.sep}lib${path.sep}index.d.ts');`;
+
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}package.json', '${firebaseNodeModules}${path.sep}package.json');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}api', '${firebaseNodeModules}${path.sep}lib${path.sep}api');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.js', '${firebaseNodeModules}${path.sep}lib${path.sep}index.js');`;
+    source += `fse.copySync('${firebaseYalentoFullstackSource}${path.sep}lib${path.sep}index.d.ts', '${firebaseNodeModules}${path.sep}lib${path.sep}index.d.ts');`;
+
+
+
+
+    fs.writeFileSync(this.config.__codeGenForkPath, source);
+
+  }
+
+  private createSwaggerUi() {
+
+    const targetRoot = this.getProjectRoot(this.config.__angularDistPath, 'swagger');
+    const swaggerSourceRoot = this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'swagger-ui-dist');
+
+    if (!fs.existsSync(targetRoot)) {
+      fs.mkdirSync(targetRoot, {recursive: true});
+    }
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui.js`,
+      `${targetRoot}${path.sep}swagger-ui.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui-standalone-preset.js`,
+      `${targetRoot}${path.sep}swagger-ui-standalone-preset.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui.css`,
+      `${targetRoot}${path.sep}swagger-ui.css`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}swagger-ui-bundle.js`,
+      `${targetRoot}${path.sep}swagger-ui-bundle.js`
+    );
+
+    fs.copyFileSync(
+      `${swaggerSourceRoot}${path.sep}index.js`,
+      `${targetRoot}${path.sep}index.js`
+    );
+
+    fs.copyFileSync(this.config.__swaggerPathGenerated, this.getProjectRoot(this.config.__angularDistPath, 'swagger', 'swagger.json'));
+
+    const swaggerUi = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -388,112 +389,86 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
 </html>
 `;
 
-      fs.writeFileSync(`${targetRoot}${path.sep}index.html`, swaggerUi);
+    fs.writeFileSync(`${targetRoot}${path.sep}index.html`, swaggerUi);
 
+  }
+
+  private createSwaggerYamlIfEmpty() {
+    if (!fs.existsSync(this.config.__swaggerPath) || fs.readFileSync(this.config.__swaggerPath).toString().length < 1) {
+      fs.writeFileSync(this.config.__swaggerPath, swaggerTemplate);
     }
+  }
 
-  private
-    createSwaggerYamlIfEmpty()
-    {
-      if (!fs.existsSync(this.config.__swaggerPath) || fs.readFileSync(this.config.__swaggerPath).toString().length < 1) {
-        fs.writeFileSync(this.config.__swaggerPath, swaggerTemplate);
+  private updateAngularPackageJson() {
+    const packageJson = require(this.config.__angularPackageJsonPath);
+    packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
+    packageJson.scripts['yalento'] = 'cd ./node_modules/yalento-fullstack && npm i --ignore-scripts && node lib/compiler/yalento-fullstack';
+    packageJson.scripts['yalento:compile'] = 'npm run yalento -- compile';
+    packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
+    packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && ng test --browsers ChromeHeadless --watch=false --progress=false\"';
+    packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
+    packageJson.scripts['yalento:build:app'] = 'ng build --prod --delete-output-path=false';
+    packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
+    packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch --preserveWatchOutput\"';
+    packageJson.scripts['yalento:run'] = 'npm run yalento:compile && npm run yalento:build:app && npm run yalento:build:functions && firebase emulators:start';
+
+    fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
+  }
+
+  private generateConfig(isTestingMode: boolean): Config {
+    const firebaseRc = this.getFirebaseRc();
+    const firebase = this.getFirebase();
+    const angular = this.getAngular();
+    const isProduction = !isTestingMode && process.env['FIREBASE_TOKEN_CI'] !== undefined;
+    const projectId = process.env.FIREBASE_PROJECT_ID || firebaseRc.projects.default;
+    const region = isTestingMode || !process.env.FIREBASE_REGION ? 'us-central1' : process.env.FIREBASE_REGION;
+
+    return {
+      __jsonSchemaPath: '',
+      __swaggerPathGenerated: '',
+      __codeGenForkPath: '',
+      __codeGenCommandApi: '',
+      __codeGenCommandJest: '',
+      __tscCommand: `node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript', 'bin', 'tsc')} --project ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`,
+      __firebaseRcPath: this.getProjectRoot('.firebaserc'),
+      __firebasePath: this.getProjectRoot('firebase.json'),
+      __codeGenPath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codegen'),
+      __angularPackageJsonPath: this.getProjectRoot('package.json'),
+      __swaggerPath: this.getProjectRoot('swagger.yaml'),
+      __generatedCodePath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName),
+      __angularDistPath: angular.projects[angular.defaultProject].architect.build.options
+        .outputPath,
+      __angularTsConfigPath: this.getProjectRoot('tsconfig.json'),
+      __functionsTsConfigPath: this.getProjectRoot('functions', 'tsconfig.json'),
+      apiHost: process.env.API_HOST || (isProduction ? `${region}-${projectId}.cloudfunctions.net` : `localhost:${firebase.emulators.functions.port}`),
+      apiBaseUrl: process.env.PI_BASEU_URL || (isProduction ? '' : `/${projectId}/${region}`),
+      production: isProduction,
+      firebase: {
+        projectId: projectId,
+        ssl: !(isTestingMode || !isProduction),
+        region: region,
+        host: isTestingMode || !isProduction ? `localhost:${firebase.emulators.firestore.port}` : undefined
       }
-    }
-
-  private
-    updateAngularPackageJson()
-    {
-      const packageJson = require(this.config.__angularPackageJsonPath);
-      packageJson.scripts['swagger:edit'] = 'cd node_modules/yalento-fullstack && npm run swagger:edit';
-      packageJson.scripts['yalento'] = 'cd ./node_modules/yalento-fullstack && npm i --ignore-scripts && node lib/compiler/yalento-fullstack';
-      packageJson.scripts['yalento:compile'] = 'npm run yalento -- compile';
-      packageJson.scripts['yalento:compile:watch'] = 'npm run yalento -- compile --watch';
-      packageJson.scripts['yalento:test:app'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && ng test --browsers ChromeHeadless --watch=false --progress=false\"';
-      packageJson.scripts['yalento:test:api'] = 'cd functions && npm install && tsc --preserveWatchOutput && firebase -- emulators:exec \"cd .. && cd node_modules/yalento-fullstack && npm run test-api\"';
-      packageJson.scripts['yalento:build:app'] = 'ng build --prod --delete-output-path=false';
-      packageJson.scripts['yalento:build:functions'] = 'cd functions && npm install && npm run build';
-      packageJson.scripts['yalento:backend:serve'] = 'cd functions && firebase -- emulators:exec \"tsc --watch --preserveWatchOutput\"';
-      packageJson.scripts['yalento:run'] = 'npm run yalento:compile && npm run yalento:build:app && npm run yalento:build:functions && firebase emulators:start';
-
-      fs.writeFileSync(this.config.__angularPackageJsonPath, beautify(JSON.stringify(packageJson)));
-    }
-
-  private
-    generateConfig(isTestingMode
-  :
-    boolean
-  ):
-    Config
-    {
-      const firebaseRc = this.getFirebaseRc();
-      const firebase = this.getFirebase();
-      const angular = this.getAngular();
-      const isProduction = !isTestingMode && process.env['FIREBASE_TOKEN_CI'] !== undefined;
-      const projectId = process.env.FIREBASE_PROJECT_ID || firebaseRc.projects.default;
-      const region = isTestingMode || !process.env.FIREBASE_REGION ? 'us-central1' : process.env.FIREBASE_REGION;
-
-      return {
-        __jsonSchemaPath: '',
-        __swaggerPathGenerated: '',
-        __codeGenForkPath: '',
-        __codeGenCommandApi: '',
-        __codeGenCommandJest: '',
-        __tscCommand: `node ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'node_modules', 'typescript', 'bin', 'tsc')} --project ${this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', 'tsconfig.json')}`,
-        __firebaseRcPath: this.getProjectRoot('.firebaserc'),
-        __firebasePath: this.getProjectRoot('firebase.json'),
-        __codeGenPath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName, 'bin', 'codegen'),
-        __angularPackageJsonPath: this.getProjectRoot('package.json'),
-        __swaggerPath: this.getProjectRoot('swagger.yaml'),
-        __generatedCodePath: this.getProjectRoot(this.nodeModulesPathName, 'yalento-fullstack', this.tempPathName),
-        __angularDistPath: angular.projects[angular.defaultProject].architect.build.options
-          .outputPath,
-        __angularTsConfigPath: this.getProjectRoot('tsconfig.json'),
-        __functionsTsConfigPath: this.getProjectRoot('functions', 'tsconfig.json'),
-        apiHost: process.env.API_HOST || (isProduction ? `${region}-${projectId}.cloudfunctions.net` : `localhost:${firebase.emulators.functions.port}`),
-        apiBaseUrl: process.env.PI_BASEU_URL || (isProduction ? '' : `/${projectId}/${region}`),
-        production: isProduction,
-        firebase: {
-          projectId: projectId,
-          ssl: !(isTestingMode || !isProduction),
-          region: region,
-          host: isTestingMode || !isProduction ? `localhost:${firebase.emulators.firestore.port}` : undefined
-        }
-      }
-
-    }
-
-  private
-    getAngular()
-  :
-    any
-    {
-      return JSON.parse(fs.readFileSync(this.getProjectRoot('angular.json')).toString());
-    }
-
-  private
-    getFirebase()
-  :
-    any
-    {
-      return JSON.parse(fs.readFileSync(this.getProjectRoot('firebase.json')).toString());
-    }
-
-
-  private
-    getFirebaseRc()
-  :
-    any
-    {
-
-      return JSON.parse(fs.readFileSync(this.getProjectRoot('.firebaserc')).toString());
-    }
-
-  private
-    getProjectRoot(...pathOrFileName)
-  :
-    string
-    {
-      return `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}..${path.sep}${pathOrFileName.join(path.sep)}`;
     }
 
   }
+
+  private getAngular(): any {
+    return JSON.parse(fs.readFileSync(this.getProjectRoot('angular.json')).toString());
+  }
+
+  private getFirebase(): any {
+    return JSON.parse(fs.readFileSync(this.getProjectRoot('firebase.json')).toString());
+  }
+
+
+  private getFirebaseRc(): any {
+
+    return JSON.parse(fs.readFileSync(this.getProjectRoot('.firebaserc')).toString());
+  }
+
+  private getProjectRoot(...pathOrFileName): string {
+    return `${__dirname}${path.sep}..${path.sep}..${path.sep}..${path.sep}..${path.sep}${pathOrFileName.join(path.sep)}`;
+  }
+
+}
