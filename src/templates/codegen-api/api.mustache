@@ -345,7 +345,7 @@ export class {{classname}} extends BaseAPI {
 
     {{#operation}}
 
-    static {{nickname}}Path = `{{{path}}}`;
+    static {{nickname}}Path = '{{{path}}}'.replace(/\{/g,':').replace(/\}/g,''));
 
     /**
      * {{&notes}}
