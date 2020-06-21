@@ -165,6 +165,10 @@ promises.push(_repositories[classname].create(sampleData));
 }
 
 Promise.all(promises).finally(() => {
+// wait for initialisation
+Object.keys(_repositories).forEach((classname) => {
+_repositories[classname].count()
+});
 resolve();
 });
 
