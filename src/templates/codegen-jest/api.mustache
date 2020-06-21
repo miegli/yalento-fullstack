@@ -153,23 +153,19 @@ if (_firestore) {
 Object.keys(ti).forEach((classname) => {
 const sampleData = getTiSampleData(classname);
 if (api[classname] && sampleData && Object.keys(sampleData).length > 0) {
-if (_repositories[classname] !== undefined) {
-_repositories[classname].destroy();
-}
+if (_repositories[classname] === undefined) {
 _repositories[classname] = new _yalento.Repository(api[classname], classname);
 _repositories[classname].connectFirestore(_firestore);
-
+}
 promises.push(_repositories[classname].create(sampleData));
 }
 });
 }
 
 Promise.all(promises).finally(() => {
-// wait for initialisation
-Object.keys(_repositories).forEach((classname) => {
-_repositories[classname].count()
-});
+setTimeout(() => {
 resolve();
+}, 50);
 });
 
 }));
