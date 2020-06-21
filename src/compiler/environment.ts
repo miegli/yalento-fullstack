@@ -452,6 +452,7 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
       apiBaseUrl: process.env.PI_BASEU_URL || (isProduction ? '' : `/${projectId}/${region}`),
       production: isProduction,
       firebase: {
+        apiKey: 'apiKey',
         projectId: projectId,
         ssl: !(isTestingMode || !isProduction),
         region: region,
