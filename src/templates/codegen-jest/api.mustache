@@ -119,6 +119,83 @@ data[key] = [getSampleData(value.ttype.name)];
 return data;
 }
 
+// load mock data
+
+import * as api from '../api/api';
+import * as firebase from 'firebase';
+
+const fs = require('fs');
+const path = require('path');
+let _firestore;
+let _repositories = {};
+let _yalento;
+let firestore: firebase.firestore.Firestore | null = null;
+
+async function loadMockData() {
+
+return new Promise((resolve => {
+
+const firebaseConfig = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}firebase.json`;
+const firebaseRc = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}.firebaserc`;
+const yalento = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}functions${path.sep}node_modules${path.sep}yalento`;
+const isYalento = fs.existsSync(yalento);
+
+const isFirestore = false;
+const promises: any[] = [];
+
+if (isYalento) {
+if (!_yalento) {
+_yalento = require(yalento);
+}
+if (!_firestore) {
+const isFirebaseRc = fs.existsSync(firebaseRc);
+const isFirebaseConfig = fs.existsSync(firebaseConfig);
+
+if (isFirebaseRc && isFirebaseConfig) {
+
+const _firebaseRc = JSON.parse(fs.readFileSync(firebaseRc).toString());
+const _firebaseConfig = require(firebaseConfig);
+const config = {
+apiKey: 'your-firebase-key',
+projectId: _firebaseRc.projects.default
+};
+
+firebase.initializeApp(config);
+_firestore = firebase.firestore();
+_firestore.settings({
+host: 'localhost:' + _firebaseConfig.emulators.firestore.port,
+ssl: false
+});
+}
+
+}
+
+if (_firestore) {
+Object.keys(ti).forEach((classname) => {
+const sampleData = getTiSampleData(classname);
+if (api[classname] && sampleData && Object.keys(sampleData).length > 0) {
+if (_repositories[classname] === undefined) {
+_repositories[classname] = new _yalento.Repository(api[classname], classname);
+_repositories[classname].connectFirestore(_firestore);
+}
+promises.push(_repositories[classname].create(sampleData));
+}
+        });
+}
+
+        }
+
+Promise.all(promises).finally(() => {
+resolve();
+});
+
+}));
+
+}
+
+// end load mock data
+
+
 // call to ensure execution once
 getTiSampleData('string');
 
