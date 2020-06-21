@@ -5,7 +5,8 @@ import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
 import apiTI from "../api/api-ti";
 import {createCheckers} from "ts-interface-checker";
-const BASE_PATH = "http://localhost:5101/juniorenliga-5dc68/us-central1/api".replace(/\/+$/, "");
+import {config} from "../config";
+const BASE_PATH = ´http://localhost:${config.apiHost}/${config.apiBaseUrl}´+"{{{basePath}}}";
 const ti = createCheckers(apiTI);
 //@ts-ignore
 jest.setTimeout(5000);
@@ -120,53 +121,31 @@ return data;
 }
 
 // load mock data
-
 import * as api from '../api/api';
 import * as firebase from 'firebase';
+import * as _yalento from 'yalento';
 
 const fs = require('fs');
 const path = require('path');
 let _firestore;
 let _repositories = {};
-let _yalento;
 let firestore: firebase.firestore.Firestore | null = null;
 
 async function loadMockData() {
 
 return new Promise((resolve => {
 
-const firebaseConfig = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}firebase.json`;
-const firebaseRc = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}.firebaserc`;
-const yalento = `..${path.sep}..${path.sep}..${path.sep}..${path.sep}functions${path.sep}node_modules${path.sep}yalento`;
-const isYalento = fs.existsSync(yalento);
-
 const isFirestore = false;
 const promises: any[] = [];
 
-if (isYalento) {
-if (!_yalento) {
-_yalento = require(yalento);
-}
 if (!_firestore) {
-const isFirebaseRc = fs.existsSync(firebaseRc);
-const isFirebaseConfig = fs.existsSync(firebaseConfig);
 
-if (isFirebaseRc && isFirebaseConfig) {
-
-const _firebaseRc = JSON.parse(fs.readFileSync(firebaseRc).toString());
-const _firebaseConfig = require(firebaseConfig);
-const config = {
-apiKey: 'your-firebase-key',
-projectId: _firebaseRc.projects.default
-};
-
-firebase.initializeApp(config);
+firebase.initializeApp(config.firebase);
 _firestore = firebase.firestore();
 _firestore.settings({
-host: 'localhost:' + _firebaseConfig.emulators.firestore.port,
+host: config.firebase.host,
 ssl: false
 });
-}
 
 }
 
@@ -180,10 +159,8 @@ _repositories[classname].connectFirestore(_firestore);
 }
 promises.push(_repositories[classname].create(sampleData));
 }
-        });
+});
 }
-
-        }
 
 Promise.all(promises).finally(() => {
 resolve();
@@ -192,6 +169,7 @@ resolve();
 }));
 
 }
+
 
 // end load mock data
 

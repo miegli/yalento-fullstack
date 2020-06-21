@@ -274,8 +274,15 @@ export function isInvalid(dataType: IDataType, data: any): boolean | Array<Error
 
     }
 
+
+    const configCode = `export const config = JSON.parse('${JSON.stringify(this.config)}');`
+    source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}config.ts\`, \`${configCode}\`);
+    `;
+
+
     const indexApiCode = `export * from '.${path.sep}api${path.sep}json-schema/index';
-    export * from '.${path.sep}api/api';`;
+    export * from '.${path.sep}api/api';
+    `;
 
     source += `fs.writeFileSync(\`${this.config.__generatedCodePath}${path.sep}index.ts\`, \`${indexApiCode}\`);
     `;
