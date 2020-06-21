@@ -153,10 +153,12 @@ if (_firestore) {
 Object.keys(ti).forEach((classname) => {
 const sampleData = getTiSampleData(classname);
 if (api[classname] && sampleData && Object.keys(sampleData).length > 0) {
-if (_repositories[classname] === undefined) {
+if (_repositories[classname] !== undefined) {
+_repositories[classname].destroy();
+}
 _repositories[classname] = new _yalento.Repository(api[classname], classname);
 _repositories[classname].connectFirestore(_firestore);
-}
+
 promises.push(_repositories[classname].create(sampleData));
 }
 });
