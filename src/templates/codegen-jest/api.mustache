@@ -469,6 +469,10 @@ export const {{classname}}Fp = function(configuration?: Configuration) {
 
 describe('{{classname}}', () => {
 
+  beforeEach(async () => {
+  await loadMockData()
+  });
+
 {{#operation}}
     describe('{{httpMethod}} {{path}}', () => {
 
