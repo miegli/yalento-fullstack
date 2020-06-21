@@ -6,7 +6,7 @@ import { Configuration } from "./configuration";
 import apiTI from "../api/api-ti";
 import {createCheckers} from "ts-interface-checker";
 import {config} from "../config";
-const BASE_PATH = ´http://localhost:${config.apiHost}/${config.apiBaseUrl}´+"{{{basePath}}}";
+const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
 const ti = createCheckers(apiTI);
 //@ts-ignore
 jest.setTimeout(5000);
